@@ -29,15 +29,15 @@
 .EXAMPLE
     .\removeconfig.ps1 --all --whatif
 #>
-param(
-    [string] $ProfilePath
-)
-
-# All plugin names / --flags arrive via the automatic $args. We deliberately do NOT
-# use a [Parameter(ValueFromRemainingArguments)] param: that would make this an
-# advanced function, whose common parameters (-Verbose, -InformationAction, ...) would
-# swallow tokens like --verbose / --info before our own parser ever sees them.
+# All tokens (plugin names, --flags, and -ProfilePath <path>) arrive via the automatic
+# $args and are parsed by hand below. We deliberately declare NO parameters:
+#   * a [Parameter(ValueFromRemainingArguments)] param would make this an advanced
+#     function whose common params (-Verbose, -InformationAction, ...) would swallow
+#     --verbose / --info; and
+#   * even a plain [string] $ProfilePath param would bind the first --plugin token as a
+#     positional value.
 $Selection = $args
+$ProfilePath = $null
 
 $ErrorActionPreference = 'Stop'
 
@@ -127,7 +127,6 @@ Restore a profile afterwards with:  .\addconfig.ps1 --restore <id>
 #endregion
 
 #region argument parsing ----------------------------------------------------
-if (-not $ProfilePath) { $ProfilePath = $PROFILE.CurrentUserAllHosts }
 $script:pluginsRoot = Join-Path $PSScriptRoot 'plugins'
 if (-not $Selection) { $Selection = @() }
 
@@ -138,18 +137,23 @@ $script:whatIf  = $false
 $script:verbose = $false
 $requested    = @()
 $unknownFlags = @()
+$expectProfilePath = $false
 
 foreach ($tok in $Selection) {
     $low = "$tok".ToLowerInvariant()
+    if ($expectProfilePath) { $ProfilePath = $tok; $expectProfilePath = $false; continue }
     if     ($low -eq '--all')                       { $removeAll = $true }
     elseif ($low -in '--whatif', '-whatif')         { $script:whatIf  = $true }
     elseif ($low -in '--force', '-force')           { $script:force   = $true }
     elseif ($low -in '--verbose', '-verbose')       { $script:verbose = $true }
     elseif ($low -in '--help', '-help', '-h', '/?') { $doHelp       = $true }
+    elseif ($low -in '-profilepath', '--profilepath', '--profile-path') { $expectProfilePath = $true }
     elseif ($tok -like '--*') { $requested += ($tok -replace '^--', '' -replace '(?i)\.config$', '') }
     elseif ($tok -like '-*')  { $unknownFlags += $tok }
     else   { $requested += ($tok -replace '(?i)\.config$', '') }
 }
+if ($expectProfilePath) { Write-Err "-ProfilePath requires a path."; exit 1 }
+if (-not $ProfilePath) { $ProfilePath = $PROFILE.CurrentUserAllHosts }
 #endregion
 
 Write-Host "pwsh-plugins :: removeconfig" -ForegroundColor Magenta

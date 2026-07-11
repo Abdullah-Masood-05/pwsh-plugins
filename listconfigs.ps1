@@ -28,15 +28,14 @@
 .EXAMPLE
     .\listconfigs.ps1 --info zoxide
 #>
-param(
-    [string] $ProfilePath
-)
-
-# All mode/flag tokens arrive via the automatic $args. We deliberately do NOT use a
-# [Parameter(ValueFromRemainingArguments)] param: that would make this an advanced
-# function, whose common parameters (-InformationAction, -Verbose, ...) would swallow
-# tokens like --info / --installed before our own parser ever sees them.
+# All tokens (mode/flags and -ProfilePath <path>) arrive via the automatic $args and are
+# parsed by hand below. We deliberately declare NO parameters:
+#   * a [Parameter(ValueFromRemainingArguments)] param would make this an advanced
+#     function whose common params (-InformationAction, -Verbose, ...) would swallow
+#     --info / --installed; and
+#   * even a plain [string] $ProfilePath param would bind the first --flag positionally.
 $Selection = $args
+$ProfilePath = $null
 
 $ErrorActionPreference = 'Stop'
 
@@ -113,7 +112,6 @@ Usage: .\listconfigs.ps1 [--available | --installed | --info <name>]
 #endregion
 
 #region argument parsing ----------------------------------------------------
-if (-not $ProfilePath) { $ProfilePath = $PROFILE.CurrentUserAllHosts }
 $script:pluginsRoot = Join-Path $PSScriptRoot 'plugins'
 if (-not $Selection) { $Selection = @() }
 
@@ -129,6 +127,10 @@ while ($i -lt $Selection.Count) {
     if     ($low -eq '--available')                 { $mode = 'available' }
     elseif ($low -eq '--installed')                 { $mode = 'installed' }
     elseif ($low -in '--help', '-help', '-h', '/?') { $doHelp = $true }
+    elseif ($low -in '-profilepath', '--profilepath', '--profile-path') {
+        if ($i + 1 -ge $Selection.Count) { Write-Err "-ProfilePath requires a path."; exit 1 }
+        $ProfilePath = $Selection[$i + 1]; $i++
+    }
     elseif ($low -eq '--info') {
         if (($i + 1 -ge $Selection.Count) -or ($Selection[$i + 1] -like '-*')) {
             Write-Err "--info requires a plugin name."; exit 1
@@ -138,6 +140,7 @@ while ($i -lt $Selection.Count) {
     else { $unknown += $tok }
     $i++
 }
+if (-not $ProfilePath) { $ProfilePath = $PROFILE.CurrentUserAllHosts }
 #endregion
 
 Write-Host "pwsh-plugins :: listconfigs" -ForegroundColor Magenta
