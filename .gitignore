@@ -1,0 +1,21 @@
+# Profile backups the scripts create (addconfig.ps1 / removeconfig.ps1 keep the last 5)
+*.bak
+
+# Temp / scratch
+*.tmp
+*.log
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vs/
+.vscode/
+*.suo
+*.user
+
+# PowerShell module output
+bin/
+obj/
