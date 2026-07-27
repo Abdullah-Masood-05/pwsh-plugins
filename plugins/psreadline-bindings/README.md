@@ -25,7 +25,7 @@ the plugin quietly does nothing.
 
 ## Startup cost
 
-`~0ms` — a handful of `Set-PSReadLineKeyHandler` calls, interactive only.
+`~0ms`. A handful of `Set-PSReadLineKeyHandler` calls, interactive only.
 
 ## Add it
 

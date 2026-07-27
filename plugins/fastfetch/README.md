@@ -6,15 +6,15 @@ it appears **instantly** in a new terminal instead of adding a visible startup d
 
 ## Why cached instead of run-on-every-launch
 
-Spawning fastfetch live costs **~24ms** every time — noticeable, and worse on
+Spawning fastfetch live costs **~24ms** every time, which is noticeable, and worse on
 battery when the CPU is throttled. Almost none of that is the config: per-module
 data collection is ~0.4ms and parsing the theme file is ~1ms. The rest is the
 process itself starting up, a cost every external tool pays (a different
 implementation language wouldn't avoid it).
 
 So this plugin renders the banner once, caches the colored output to a file, and on
-every new shell just **prints that file** (~1.5ms — no process spawned, flat on
-battery). Run `ff` whenever you want a live refresh (fresh memory/disk stats) — it
+every new shell just **prints that file** (~1.5ms, no process spawned, flat on
+battery). Run `ff` whenever you want a live refresh (fresh memory/disk stats): it
 re-renders, updates the cache, and shows it.
 
 ## Commands
@@ -27,7 +27,7 @@ re-renders, updates the cache, and shows it.
 
 ## Default logo: Windows
 
-Out of the box — before you've created a theme file — there's nothing for fastfetch
+Out of the box, before you've created a theme file, there's nothing for fastfetch
 to load, so it falls back to **its own built-in Windows logo**. You get a working
 banner immediately; customizing the logo is opt-in.
 
@@ -60,11 +60,11 @@ That file doesn't exist until you create it. To set up a custom logo:
 `ff` checks the theme file on every run and repairs two common mistakes automatically,
 printing a `[ff] repaired config.jsonc ...` note when it does:
 
-- **Stale `source` path** — if the path in `"source"` doesn't exist, but a file with
+- **Stale `source` path**: if the path in `"source"` doesn't exist, but a file with
   that same *name* exists in your `Documents\ps\fastfetch\` folder, the path gets
   rewritten to point there. (This is exactly what happens if you paste a sample
-  config from another machine/user without editing the path — see below.)
-- **Unsupported icon glyphs** — `pwsh-terminal-setup`'s bundled font (LigaConsolas
+  config from another machine/user without editing the path, see below.)
+- **Unsupported icon glyphs**: `pwsh-terminal-setup`'s bundled font (LigaConsolas
   Nerd Font) is missing a few newer Nerd Font icons that fastfetch themes commonly
   use for `cpu`, `board`, and `memory` (they'd otherwise render as `▯`/`□`). `ff`
   swaps them for equivalents the font actually has.
@@ -86,7 +86,7 @@ Copy-Item plugins\fastfetch\samples\lion_config.jsonc "$HOME\Documents\ps\fastfe
 ff
 ```
 
-The sample's `"source"` path is a placeholder (`C:/Users/Administrator/...`) — you
+The sample's `"source"` path is a placeholder (`C:/Users/Administrator/...`), so you
 don't need to fix it by hand. Since the copied `lion.txt` sits next to your new
 `config.jsonc` with a matching filename, the **self-healing** step above corrects the
 path on the very first `ff` run.
@@ -102,20 +102,20 @@ $__ffMode = 'cached'   # 'cached' | 'manual' | 'always'
 | Mode | Behavior |
 |------|----------|
 | `cached` *(default)* | Prints the cached snapshot on every new shell (~1.5ms). Stats reflect the last `ff` run. |
-| `manual` | Shows nothing on startup — type `ff` whenever you want the banner. |
+| `manual` | Shows nothing on startup. Type `ff` whenever you want the banner. |
 | `always` | Runs fastfetch live on every new shell (~24ms, the cost this plugin exists to avoid). |
 
 To change it, edit that line, then reinstall: `.\addconfig.ps1 --fastfetch --force`.
 
 ## Troubleshooting
 
-- **Icons show as boxes/`▯`** — make sure `pwsh-terminal-setup`'s Nerd Font patch has
+- **Icons show as boxes/`▯`**: make sure `pwsh-terminal-setup`'s Nerd Font patch has
   been applied to your Windows Terminal profile, and that you've run `ff` at least
   once since editing the theme (see self-healing, above).
-- **Edited `config.jsonc` but nothing changed** — you have to run `ff` to refresh the
+- **Edited `config.jsonc` but nothing changed**: you have to run `ff` to refresh the
   cache; just saving the file isn't enough, since new shells print the cached
   snapshot, not the live file.
-- **Banner never changes no matter what you do** — fastfetch has its own built-in
+- **Banner never changes no matter what you do**: fastfetch has its own built-in
   config search path and checks `~/.config/fastfetch/config.jsonc` *before* anything
   else in some resolution orders. If that file exists (e.g. left over from running
   `fastfetch --gen-config` once, or from following fastfetch's own docs), it can
@@ -134,8 +134,8 @@ To change it, edit that line, then reinstall: `.\addconfig.ps1 --fastfetch --for
 
 | Situation | Prints on shell start? |
 |---|---|
-| Interactive shell (Windows Terminal) | Yes — cached snapshot |
-| `pwsh -NoExit ...` | Yes — cached snapshot |
+| Interactive shell (Windows Terminal) | Yes, cached snapshot |
+| `pwsh -NoExit ...` | Yes, cached snapshot |
 | `pwsh -Command ...` / `-c` | No |
 | `pwsh -File script.ps1` / `-f` | No |
 | `pwsh -NonInteractive ...` | No |

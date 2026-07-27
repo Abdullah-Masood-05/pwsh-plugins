@@ -20,7 +20,7 @@ uses `@args` splatting, so extra flags pass straight through to `git`.
 
 ## Dependencies
 
-- **git** — install with:
+- **git**: install with:
 
   ```powershell
   winget install --id Git.Git -e
@@ -28,7 +28,7 @@ uses `@args` splatting, so extra flags pass straight through to `git`.
 
 ## Startup cost
 
-`~0ms` — just function definitions, nothing runs at load time.
+`~0ms`. Just function definitions, nothing runs at load time.
 
 ## Examples
 

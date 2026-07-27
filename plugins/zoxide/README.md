@@ -17,7 +17,7 @@ its ranking gets.
 
 ## Dependencies
 
-- **zoxide** — install with:
+- **zoxide**: install with:
 
   ```powershell
   winget install --id ajeetdsouza.zoxide -e
@@ -28,7 +28,7 @@ it is safe to enable ahead of time.
 
 ## Startup cost
 
-`~5ms` — runs `zoxide init powershell` once at load to register the hook.
+`~5ms`. Runs `zoxide init powershell` once at load to register the hook.
 
 ## Examples
 

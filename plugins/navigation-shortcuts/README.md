@@ -21,7 +21,7 @@ None. Pure PowerShell, portable, no external tools.
 
 ## Startup cost
 
-`~0ms` — just function definitions.
+`~0ms`. Just function definitions.
 
 ## Examples
 

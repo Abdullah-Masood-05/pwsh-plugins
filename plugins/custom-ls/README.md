@@ -1,6 +1,6 @@
 # custom-ls
 
-A colorized `ls` with **no external modules** — just `Get-ChildItem` plus ANSI
+A colorized `ls` with **no external modules**, just `Get-ChildItem` plus ANSI
 escape codes. Names are colored by type and extension so directories, code,
 images, and archives stand out at a glance.
 
@@ -33,7 +33,7 @@ falls back gracefully otherwise.
 
 ## Startup cost
 
-`~0ms` — only defines two functions and two lookup tables at load.
+`~0ms`. Only defines two functions and two lookup tables at load.
 
 ## Notes
 

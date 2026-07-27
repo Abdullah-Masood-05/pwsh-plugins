@@ -24,7 +24,7 @@ None required. Completion for a given tool only activates when that tool
 
 ## Startup cost
 
-`~0ms` — registering completers is cheap; the work happens only when you press
+`~0ms`. Registering completers is cheap; the work happens only when you press
 `Tab`.
 
 ## Examples
