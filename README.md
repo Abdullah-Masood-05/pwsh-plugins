@@ -1,7 +1,7 @@
 <h1 align="center">pwsh-plugins</h1>
 
 <p align="center">
-  <strong>A modular plugin ecosystem for PowerShell 7 — add only the features you want, keep your shell fast.</strong>
+  <strong>A modular plugin ecosystem for PowerShell 7. Add only the features you want, keep your shell fast.</strong>
 </p>
 
 <p align="center">
@@ -23,19 +23,19 @@
 ---
 
 `pwsh-plugins` is a plugin manager for your PowerShell 7 profile. Each plugin is a small, self-contained
-`.config` snippet you opt into with one command. Install `git-aliases` and `zoxide`, skip everything else —
-your startup only pays for what you pick. Three scripts (`addconfig.ps1`, `removeconfig.ps1`, `listconfigs.ps1`)
+`.config` snippet you opt into with one command. Install `git-aliases` and `zoxide`, skip everything else,
+and your startup only pays for what you pick. Three scripts (`addconfig.ps1`, `removeconfig.ps1`, `listconfigs.ps1`)
 handle install, removal, dependency resolution, and profile backups.
 
 ## Overview & philosophy
 
 - **Minimalism by default.** A bare install adds nothing to your shell. You start from zero and add exactly the pieces you want.
 - **Opt-in extensions.** Nothing is enabled behind your back. Every feature is a plugin you explicitly install by name.
-- **Zero performance penalty.** Only the plugins you install touch startup. The manager itself doesn't run at shell launch — it just edits your profile.
-- **Modular & self-contained.** Each plugin is one `.config` file with a metadata header and a PowerShell body. Read it, audit it, fork it — no hidden runtime.
+- **Zero performance penalty.** Only the plugins you install touch startup. The manager itself doesn't run at shell launch, it just edits your profile.
+- **Modular & self-contained.** Each plugin is one `.config` file with a metadata header and a PowerShell body. Read it, audit it, fork it: no hidden runtime.
 
 It's built as an add-on to **[`pwsh-terminal-setup`](https://github.com/Abdullah-Masood-05/pwsh-terminal-setup)**
-(a minimal, ultra-fast PowerShell 7 + Windows Terminal setup with a clean zsh-like prompt) — but it has no
+(a minimal, ultra-fast PowerShell 7 + Windows Terminal setup with a clean zsh-like prompt), but it has no
 dependency on it and **works standalone** on any PowerShell 7 profile.
 
 ## Quick start
@@ -73,7 +73,7 @@ Each plugin also ships its own README under `plugins/<name>/` with the full comm
 Three scripts drive everything. All of them accept `-ProfilePath <path>` to target a profile other than
 the default `$PROFILE.CurrentUserAllHosts` (handy for testing).
 
-### `addconfig.ps1` — install plugins
+### `addconfig.ps1`: install plugins
 
 ```powershell
 .\addconfig.ps1 --git-aliases.config --zoxide.config     # install one or more
@@ -88,7 +88,7 @@ the default `$PROFILE.CurrentUserAllHosts` (handy for testing).
 | `--all` | Install every available plugin |
 | `--list` | List available plugins and exit |
 | `--force` | Reinstall a plugin even if it's already present |
-| `--whatif` | Dry run — print what would change, write nothing |
+| `--whatif` | Dry run: print what would change, write nothing |
 | `--verbose` | Show detailed resolution and write steps |
 | `--backup-list` | List saved profile backups with their ids |
 | `--restore <id>` | Restore the profile from a backup id |
@@ -97,12 +97,12 @@ the default `$PROFILE.CurrentUserAllHosts` (handy for testing).
 What it does on install:
 
 - **Validates** each requested plugin exists and has a well-formed header.
-- **Resolves `# Dependencies:`** — other plugins a plugin needs; prompts to add any that are missing.
+- **Resolves `# Dependencies:`**: other plugins a plugin needs; prompts to add any that are missing.
 - **Checks `# Requires:`** external tools (e.g. `git`, `zoxide`); if one isn't on `PATH`, it offers to run `winget install` for you.
 - **Backs up the profile** before writing, keeping the **last 5** backups.
-- Is **idempotent** — already-installed plugins are skipped unless you pass `--force`.
+- Is **idempotent**: already-installed plugins are skipped unless you pass `--force`.
 
-### `removeconfig.ps1` — uninstall plugins
+### `removeconfig.ps1`: uninstall plugins
 
 ```powershell
 .\removeconfig.ps1 --fastfetch.config                    # remove one
@@ -114,13 +114,13 @@ What it does on install:
 |---|---|
 | `--<name>.config` | Remove a plugin by name (repeatable) |
 | `--all` | Remove every installed plugin |
-| `--whatif` | Dry run — preview the removal, write nothing |
+| `--whatif` | Dry run: preview the removal, write nothing |
 | `-ProfilePath <path>` | Target a specific profile file |
 
 It **lists what it will remove first**, **backs up** the profile before modifying it, and **warns** if
 another installed plugin still depends on the one you're removing.
 
-### `listconfigs.ps1` — see what's available and installed
+### `listconfigs.ps1`: see what's available and installed
 
 ```powershell
 .\listconfigs.ps1                                        # all available plugins (default)
@@ -172,7 +172,7 @@ Invoke-Expression (& { (zoxide init powershell | Out-String) })
 ```
 
 `removeconfig.ps1` strips that exact block back out. Because everything lives inside named markers, the
-manager can add, remove, and detect plugins without disturbing the rest of your profile — and **nothing is
+manager can add, remove, and detect plugins without disturbing the rest of your profile, and **nothing is
 loaded that you didn't install**.
 
 ## Create your own plugin
@@ -183,8 +183,8 @@ loaded that you didn't install**.
    Copy-Item templates\plugin-template.config plugins\my-plugin\my-plugin.config
    ```
 
-2. **Fill the metadata header** — `# Plugin:`, `# Version:`, `# Dependencies:`, `# Requires:`, `# Startup Cost:`.
-3. **Write the body.** Guard anything interactive or slow so a normal startup stays ~0 ms — only run heavy
+2. **Fill the metadata header**: `# Plugin:`, `# Version:`, `# Dependencies:`, `# Requires:`, `# Startup Cost:`.
+3. **Write the body.** Guard anything interactive or slow so a normal startup stays ~0 ms. Only run heavy
    work on first use or behind a check, not on every shell launch.
 4. **Add `plugins/my-plugin/README.md`** describing what it adds and how to use it.
 5. Install it:
@@ -198,8 +198,8 @@ loaded that you didn't install**.
 
 **Dependencies vs. Requires:**
 
-- `# Dependencies:` — other **plugins** in this repo (installed for you if missing).
-- `# Requires:` — external **tools**, written as `cmd|winget-id` (e.g. `zoxide|ajeetdsouza.zoxide`) so the
+- `# Dependencies:`: other **plugins** in this repo (installed for you if missing).
+- `# Requires:`: external **tools**, written as `cmd|winget-id` (e.g. `zoxide|ajeetdsouza.zoxide`) so the
   manager can detect them on `PATH` and offer a `winget install`.
 
 ## Troubleshooting
@@ -208,17 +208,17 @@ loaded that you didn't install**.
 |---|---|
 | **Execution policy error** running a script | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, or run via `pwsh -ExecutionPolicy Bypass -File .\addconfig.ps1 ...` |
 | **Changes didn't apply** after install | Restart the terminal, or reload the profile: `. $PROFILE.CurrentUserAllHosts` |
-| **External tool still missing** after install | Install it yourself — `winget install --id <id> -e` — then reopen the terminal |
+| **External tool still missing** after install | Install it yourself: `winget install --id <id> -e`, then reopen the terminal |
 | **Need to roll back the profile** | `.\addconfig.ps1 --backup-list` to see saved backups, then `.\addconfig.ps1 --restore <id>` |
 
 ## Comparison
 
 How this differs from framework-style setups like **Oh My Posh** or **oh-my-zsh**:
 
-- **No runtime framework.** There's no engine that loads on every prompt or shell launch — the manager only
+- **No runtime framework.** There's no engine that loads on every prompt or shell launch. The manager only
   edits your profile, then gets out of the way.
 - **You inject exactly what you pick.** Installed plugins are plain snippets appended to your profile, nothing more.
-- **Readable PowerShell.** Every plugin is a short `.config` file you can open and understand — no plugin loader, no theme DSL.
+- **Readable PowerShell.** Every plugin is a short `.config` file you can open and understand: no plugin loader, no theme DSL.
 - **Near-zero base startup.** A fresh install adds 0 ms; each plugin's cost is listed up front so you can budget it.
 
 Frameworks buy you a large curated ecosystem and theming out of the box; `pwsh-plugins` trades that for a
@@ -237,7 +237,7 @@ smaller, transparent, pay-for-what-you-use model. Pick whichever fits how you wo
 ---
 
 <p align="center">
-  Companion to <a href="https://github.com/Abdullah-Masood-05/pwsh-terminal-setup"><b>pwsh-terminal-setup</b></a> —
+  Companion to <a href="https://github.com/Abdullah-Masood-05/pwsh-terminal-setup"><b>pwsh-terminal-setup</b></a>,
   a fast, good-looking PowerShell 7 + Windows Terminal setup.
   <br>
   Docs: <a href="https://abdullah-masood-05.github.io/pwsh-terminal-setup/">abdullah-masood-05.github.io/pwsh-terminal-setup</a>
