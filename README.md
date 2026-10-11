@@ -8,6 +8,11 @@
   <a href="https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows"><img alt="PowerShell 7+" src="https://img.shields.io/badge/PowerShell-7%2B-5391FE?logo=powershell&logoColor=white"></a>
   <a href="https://aka.ms/terminal"><img alt="Windows 10/11" src="https://img.shields.io/badge/Windows-10%2F11-0078D6?logo=windows11&logoColor=white"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/Abdullah-Masood-05/pwsh-plugins?color=1E4E79"></a>
+  <a href="https://github.com/Abdullah-Masood-05/pwsh-plugins/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Abdullah-Masood-05/pwsh-plugins?style=social&logo=github"></a>
+</p>
+
+<p align="center">
+  ⭐ <b>Enjoying pwsh-plugins?</b> If it's useful to you, please <a href="https://github.com/Abdullah-Masood-05/pwsh-plugins">star it on GitHub</a>. It's free and it helps other developers find it.
 </p>
 
 <p align="center">
